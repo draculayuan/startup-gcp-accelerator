@@ -1,0 +1,19 @@
+{
+  "company": null,
+  "stage": null,
+  "default_project": null,
+  "projects": [
+    {
+      "id": null,
+      "env": "dev",
+      "purpose": null
+    }
+  ],
+  "region": "us-central1",
+  "multi_region": false,
+  "budget_monthly_usd": null,
+  "compliance": [],
+  "primary_stack": null,
+  "enforce_help_precondition": true,
+  "profile_version": 1
+}

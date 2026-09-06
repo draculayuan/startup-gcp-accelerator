@@ -1,0 +1,5 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "startup-gcp-accelerator",
+  "description": "Accelerates Google Cloud adoption for early-stage startups: grounded Q&A over official Google Cloud docs, solution architecture design including AI agent systems, Well-Architected Framework architecture review, approval-gated gcloud operations, and spec-driven development."
+}

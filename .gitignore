@@ -1,0 +1,25 @@
+# Vendored Google skills — build output, not source.
+#
+# bootstrap.sh re-fetches these from google/skills at the pinned SKILLS_REF on
+# every run, and patch_flywheel.py rewrites part of one of them in place. They
+# are deliberately not committed: a copy in this repo is a fork that drifts from
+# the pin, and the README's "same pinned ref, same no-fork rule" stops being
+# true the moment one lands here. Change SKILLS_REF to move them.
+/skills/google-cloud-solution-architecture/
+/skills/google-cloud-solution-build-deploy-agents/
+/skills/agent-platform-eval-flywheel/
+/skills/agent-platform-alert-configuration/
+
+# Interpreter and editor droppings. bootstrap.sh scrubs these from the installed
+# copy too, because a local plugin install copies the working tree verbatim and
+# a checkpointed SKILL.md would install beside the real one as a second, stale
+# copy of the same skill.
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Written by bootstrap.sh next to the files it edits, under ~/.gemini rather
+# than here — listed so a stray copy in the repo is never committed.
+*.json.bak
+
+.DS_Store

@@ -1,0 +1,18 @@
+# Python packages this skill's scripts import.
+#
+# bootstrap.sh installs only the ones whose module does not already import, so a
+# Vertex AI Workbench image -- which ships google-adk, aiplatform and pandas --
+# is left exactly as it is. The pins below apply to a fresh install only.
+#
+# `agentplatform` is a module *inside* google-cloud-aiplatform, not a
+# distribution of its own: there is no `pip install agentplatform`, and the
+# import fails with the aiplatform package absent rather than misnamed. The two
+# Google packages are pinned because this capability is version-sensitive --
+# SKILL.md tells you to re-run verify_metrics.py after an agentplatform upgrade,
+# because which metrics work and which spec version the service serves both move
+# between releases. pandas and requests are not, so they float.
+
+google-adk==2.8.0
+google-cloud-aiplatform==1.164.0
+pandas>=2.0
+requests>=2.31

@@ -1,0 +1,30 @@
+{
+  "gcp-safety-gate": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|view_file|read_file|grep_search|view_code_item",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.gemini/config/plugins/startup-gcp-accelerator/scripts/gate_gcloud.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "gcp-audit-log": {
+    "PostToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.gemini/config/plugins/startup-gcp-accelerator/scripts/audit_log.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
