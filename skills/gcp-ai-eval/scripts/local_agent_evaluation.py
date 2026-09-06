@@ -219,6 +219,32 @@ def render_report(result, json_path, html_path):
         print(f"Could not render HTML ({exc}); the JSON result is at {json_path}.")
 
 
+def sanitize_agent_dataset(dataset):
+    """Filter out events with missing or null content from multi-turn traces.
+
+    The Vertex AI Evaluation backend strictly requires `event.content` on all
+    events in `agent_eval_data.turns[].events[]`. Multi-agent delegation in ADK
+    can emit internal transfer/state events that lack content, leading to
+    400 INVALID_ARGUMENT during scoring if not sanitized.
+    """
+    df = getattr(dataset, "eval_dataset_df", None)
+    if df is None or "agent_data" not in df.columns:
+        return
+    for idx in df.index:
+        raw = df.at[idx, "agent_data"]
+        is_str = isinstance(raw, str)
+        agent_data = json.loads(raw) if is_str else raw
+        if isinstance(agent_data, dict) and "turns" in agent_data:
+            for turn in agent_data.get("turns", []):
+                if isinstance(turn, dict) and "events" in turn:
+                    turn["events"] = [
+                        ev
+                        for ev in turn["events"]
+                        if isinstance(ev, dict) and ev.get("content") is not None
+                    ]
+            df.at[idx, "agent_data"] = json.dumps(agent_data) if is_str else agent_data
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Evaluate a local ADK agent with Agent Platform Evaluation."
@@ -330,6 +356,7 @@ def main():
     # instead returns response only, which silently makes the tool-use and
     # trajectory metrics unscoreable.
     dataset = client.evals.run_inference(agent=agent, src=src)
+    sanitize_agent_dataset(dataset)
 
     result = client.evals.evaluate(dataset=dataset, metrics=metrics)
 
